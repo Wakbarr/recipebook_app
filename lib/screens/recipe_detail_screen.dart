@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
+import '../widgets/info_card_widget.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
   final Recipe recipe;
@@ -198,15 +199,25 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Row(
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              const Icon(Icons.location_on, size: 18, color: Colors.orange),
-              const SizedBox(width: 4),
-              Text(
-                widget.recipe.region,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.location_on, size: 18, color: Colors.orange),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      widget.recipe.region,
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 16),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -249,7 +260,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       child: Row(
         children: [
           Expanded(
-            child: _buildInfoCard(
+            child: InfoCardWidget(
               icon: Icons.access_time,
               label: 'Waktu Masak',
               value: '${widget.recipe.cookingTime} menit',
@@ -258,7 +269,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: _buildInfoCard(
+            child: InfoCardWidget(
               icon: Icons.restaurant,
               label: 'Porsi',
               value: '${widget.recipe.servings} orang',
@@ -267,44 +278,12 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: _buildInfoCard(
+            child: InfoCardWidget(
               icon: Icons.category,
               label: 'Kategori',
               value: widget.recipe.category,
               color: Colors.green,
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard({
-    required IconData icon,
-    required String label,
-    required String value,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -322,34 +301,43 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.orange[50],
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.orange[200]!),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: widget.recipe.nutrition.entries.map((entry) {
-                return Column(
-                  children: [
-                    Text(
-                      entry.key,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.orange[50],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.orange[200]!),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: widget.recipe.nutrition.entries.map((entry) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          entry.key,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          entry.value,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      entry.value,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
-                      ),
-                    ),
-                  ],
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ],
