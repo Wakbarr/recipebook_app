@@ -80,24 +80,79 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   padding: const EdgeInsets.all(16),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: _getCrossAxisCount(constraints.maxWidth),
-                    childAspectRatio: 0.75,
+                    childAspectRatio:
+                        0.6, // Sesuai saran reviewer: 0.6 untuk menghindari overflow
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                   ),
                   itemCount: favoriteRecipes.length,
                   itemBuilder: (context, index) {
                     final recipe = favoriteRecipes[index];
-                    return RecipeCard(
-                      recipe: recipe,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                RecipeDetailScreen(recipe: recipe),
+                    return Stack(
+                      children: [
+                        RecipeCard(
+                          recipe: recipe,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RecipeDetailScreen(recipe: recipe),
+                              ),
+                            );
+                          },
+                        ),
+                        // Tombol remove favorit yang menggunakan toggleFavorite
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                // MENGGUNAKAN fungsi toggleFavorite
+                                toggleFavorite(recipe);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('Dihapus dari favorit'),
+                                    backgroundColor: Colors.orange,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 2),
+                                    action: SnackBarAction(
+                                      label: 'UNDO',
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        // Tambahkan kembali dengan toggleFavorite
+                                        toggleFavorite(recipe);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.withOpacity(0.9),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     );
                   },
                 );

@@ -12,7 +12,7 @@ final List<Recipe> recipeList = [
     servings: 6,
     difficulty: 'Sulit',
     imageUrl:
-        'https://images.unsplash.com/photo-1605062099098-9cddc5b0d4be?w=800',
+        'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80',
     ingredients: [
       '1 kg daging sapi',
       '1 liter santan kelapa',
@@ -140,7 +140,7 @@ final List<Recipe> recipeList = [
     servings: 4,
     difficulty: 'Mudah',
     imageUrl:
-        'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=Gado-Gado',
+        'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=80',
     ingredients: [
       '200 gram kacang tanah goreng',
       '100 gram kangkung',
@@ -314,7 +314,8 @@ final List<Recipe> recipeList = [
     cookingTime: 120,
     servings: 6,
     difficulty: 'Sedang',
-    imageUrl: 'https://via.placeholder.com/800x600/FF6B35/FFFFFF?text=Rawon',
+    imageUrl:
+        'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&q=80',
     ingredients: [
       '500 gram daging sapi',
       '5 butir kluwak',

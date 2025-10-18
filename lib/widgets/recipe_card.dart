@@ -73,26 +73,75 @@ class _RecipeCardState extends State<RecipeCard>
                     tag: 'recipe-${widget.recipe.id}',
                     child: Stack(
                       children: [
-                        Container(
+                        // Image dengan error handling
+                        SizedBox(
                           height: 180,
                           width: double.infinity,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(widget.recipe.imageUrl),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.6),
-                                ],
-                              ),
-                            ),
+                          child: Image.network(
+                            widget.recipe.imageUrl,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    child,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.transparent,
+                                            Colors.black.withOpacity(0.6),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                              return Container(
+                                color: Colors.grey[300],
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value:
+                                        loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress
+                                                  .expectedTotalBytes!
+                                        : null,
+                                    strokeWidth: 2,
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.orange[100],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.restaurant_menu,
+                                      size: 60,
+                                      color: Colors.orange[300],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'Gambar tidak tersedia',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.orange[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ),
                         // Floating category badge

@@ -56,55 +56,60 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Colors.orange,
         foregroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          _buildSearchField(),
-          if (isSearching && searchResults.isEmpty)
-            const Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.search_off, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
-                    Text(
-                      'Resep tidak ditemukan',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Coba kata kunci lain',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildSearchField(),
+            if (isSearching && searchResults.isEmpty)
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 180,
+                child: const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.search_off, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'Resep tidak ditemukan',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Coba kata kunci lain',
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          else if (!isSearching)
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.search, size: 64, color: Colors.grey[400]),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Cari resep favorit Anda',
-                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                    ),
-                    const SizedBox(height: 32),
-                    _buildSuggestions(),
-                  ],
+              )
+            else if (!isSearching)
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 180,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.search, size: 64, color: Colors.grey[400]),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Cari resep favorit Anda',
+                        style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                      ),
+                      const SizedBox(height: 32),
+                      _buildSuggestions(),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          else
-            Expanded(
-              child: GridView.builder(
+              )
+            else
+              GridView.builder(
                 padding: const EdgeInsets.all(16),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: _getCrossAxisCount(context),
-                  childAspectRatio: 0.75,
+                  childAspectRatio:
+                      0.6, // Sesuai saran reviewer: 0.6 untuk menghindari overflow
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
                 ),
@@ -125,8 +130,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 },
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

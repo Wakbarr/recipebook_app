@@ -303,7 +303,8 @@ class _HomeScreenState extends State<HomeScreen> {
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: _getCrossAxisCount(context),
-          childAspectRatio: 0.75,
+          childAspectRatio:
+              0.6, // Sesuai saran reviewer: 0.6 untuk menghindari overflow
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
         ),

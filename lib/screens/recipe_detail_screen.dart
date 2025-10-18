@@ -49,7 +49,59 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.network(widget.recipe.imageUrl, fit: BoxFit.cover),
+              Image.network(
+                widget.recipe.imageUrl,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: Colors.grey[300],
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  // Tampilan fallback ketika gambar gagal dimuat
+                  return Container(
+                    color: Colors.orange[100],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.restaurant_menu,
+                          size: 100,
+                          color: Colors.orange[300],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          widget.recipe.name,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange[800],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Gambar tidak tersedia',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.orange[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
               // Gradient overlays for modern look
               Container(
                 decoration: BoxDecoration(
